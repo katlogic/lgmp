@@ -153,6 +153,24 @@ function f(value, base)
 	end
 end
 
+function zmeta:import(bytes)
+  self:set(bytes:gsub('.', function(m)
+    return ('%02x'):format(m:byte(1))
+  end), 16)
+  return self
+end
+
+function zmeta:hex()
+  return prv.mpz_get_str(16, self)
+end
+
+function zmeta:export(dst)
+  dst = dst or ""
+  dst = dst .. self:hex():gsub("..", function(b) return string.byte(tonumber(b, 16)) end)
+  return dst
+end
+
+
 function zmeta:__tostring()
 	checkz(self)
 	return prv.mpz_get_str(10, self)
