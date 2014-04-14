@@ -14,6 +14,8 @@ local type = type
 local getmetatable = getmetatable
 local assert = assert
 local error = error
+local io = io
+local math = math
 local match = string.match
 
 local _ENV = {}
@@ -151,9 +153,28 @@ function f(value, base)
 	else
 		error("cannot initialize gmp floating point from " .. type(value))
 	end
+      end
+
+function zmeta:secure(n)
+  self:import(io.open("/dev/urandom","r"):read(math.floor(n/8)))
+  assert(self:sizeinbase(2)*2 > n)
+  return self
+end
+function fmeta:secure(n)
+  self:import(io.open("/dev/urandom","r"):read(math.floor(n/8)))
+  assert(self:sizeinbase(2)*2 > n)
+  return self
 end
 
+
 function zmeta:import(bytes)
+  self:set(bytes:gsub('.', function(m)
+    return ('%02x'):format(m:byte(1))
+  end), 16)
+  return self
+end
+
+function fmeta:import(bytes)
   self:set(bytes:gsub('.', function(m)
     return ('%02x'):format(m:byte(1))
   end), 16)
@@ -163,6 +184,10 @@ end
 function zmeta:hex()
   return prv.mpz_get_str(16, self)
 end
+function fmeta:hex()
+  return prv.mpf_get_str(16, self)
+end
+
 
 function zmeta:export(dst)
   dst = dst or ""
