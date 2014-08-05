@@ -155,18 +155,6 @@ function f(value, base)
 	end
       end
 
-function zmeta:secure(n)
-  self:import(io.open("/dev/urandom","r"):read(math.floor(n/8)))
-  assert(self:sizeinbase(2)*2 > n)
-  return self
-end
-function fmeta:secure(n)
-  self:import(io.open("/dev/urandom","r"):read(math.floor(n/8)))
-  assert(self:sizeinbase(2)*2 > n)
-  return self
-end
-
-
 function zmeta:import(bytes)
   self:set(bytes:gsub('.', function(m)
     return ('%02x'):format(m:byte(1))
