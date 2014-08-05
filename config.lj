@@ -1,0 +1,5 @@
+PREFIX=/usr/local
+LIB=-L$(PREFIX)/lib -lluajit-5.1
+INC=-I$(PREFIX)/include/luajit-2.1
+LDIR=$(PREFIX)/share/lua/5.1/
+CDIR=$(PREFIX)/lib/lua/5.1/

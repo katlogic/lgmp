@@ -1,5 +1,5 @@
 LIB=-llua
-# Might be -I/usr/include/lua-5.2
+#INC=-I/usr/include/lua-5.2
 INC=
 LDIR=/usr/share/lua/5.2/
 CDIR=/usr/lib/lua/5.2/

@@ -1,4 +1,5 @@
-LIB=-L/usr/local/lib -lluajit-ljx-5.2
-INC=-I/usr/local/include/ljx-5.2 -I/usr/local/include
-LDIR=/usr/local/share/lua/5.2/
-CDIR=/usr/local/lib/lua/5.2/
+PREFIX=/usr/local
+LIB=-L$(PREFIX)/lib -lluajit-ljx-5.2
+INC=-I$(PREFIX)/include/ljx-5.2 -I$(PREFIX)/include
+LDIR=$(PREFIX)/share/lua/5.2/
+CDIR=$(PREFIX)/lib/lua/5.2/
