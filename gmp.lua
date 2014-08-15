@@ -16,7 +16,11 @@ local assert = assert
 local error = error
 local io = io
 local math = math
+local table = table
+local print = print
 local match = string.match
+local tostring = tostring
+local tonumber = tonumber
 
 local _ENV = {}
 
@@ -237,7 +241,7 @@ function zmeta:__mod(other)
 	elseif type(self) == "number" then
 		return zmeta.fdiv_r(dtoz(self), other)
 	else
-		error("unsupported type")
+		error("unsupported type"..ntype(self)..tostring(self))
 	end
 end
 
@@ -584,6 +588,16 @@ function zmeta:fdiv_q_2exp(a, res)
 	checkzopt(res)
 	return prv.mpz_fdiv_q_2exp(self, a, res)
 end
+
+function zmeta:limbs()
+        local res = {}
+        while self:cmp(0) ~= 0 do
+          table.insert(res, tonumber(self:fdiv_r_2exp(32):get_d()))
+          self = self:fdiv_q_2exp(32)
+        end
+        return res
+end
+
 
 function zmeta:fdiv_qr(a, r1, r2)
 	checkz(self)
@@ -1587,15 +1601,16 @@ function rand(a)
 	end
 end
 
+
 function randmeta:seed(a)
 	checkrand(self)
 	local t = ntype(a)
-	if a == "u" then
+	if t == "u" then
 		prv.gmp_randseed_ui(self, a)
-	elseif a == "z" then
+	elseif t == "z" then
 		prv.gmp_randseed(self, a)
 	else
-		error("unsupported type")
+		error("unsupported type"..t)
 	end
 end
 
